@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.example.guest.ourrestaurant.R;
 import com.example.guest.ourrestaurant.adapters.RestaurantPagerAdapter;
 import com.example.guest.ourrestaurant.models.Restaurant;
+import com.example.guest.ourrestaurant.util.ScaleAndFadePageTransformer;
 
 import org.parceler.Parcels;
 
@@ -31,5 +32,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         adapterViewPager = new RestaurantPagerAdapter(getSupportFragmentManager(), mRestaurants);
         mViewPager.setAdapter(adapterViewPager);
         mViewPager.setCurrentItem(startingPosition);
+        mViewPager.setPageTransformer(true, new ScaleAndFadePageTransformer());
     }
 }

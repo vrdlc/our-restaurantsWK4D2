@@ -28,25 +28,6 @@ public class SavedRestaurantListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurants);
-        ButterKnife.bind(this);
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        mFirebaseRestaurantsRef = new Firebase(Constants.FIREBASE_URL_RESTAURANTS);
-
-        setUpFirebaseQuery();
-        setUpRecyclerView();
-    }
-
-    private void setUpFirebaseQuery() {
-        String userUid = mSharedPreferences.getString(Constants.KEY_UID, null);
-        String location = mFirebaseRestaurantsRef.child(userUid).toString();
-        mQuery = new Firebase(location);
-    }
-
-    private void setUpRecyclerView() {
-        mAdapter = new FirebaseRestaurantListAdapter(mQuery, Restaurant.class);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mAdapter);
+        setContentView(R.layout.activity_saved_restaurant_list);
     }
 }

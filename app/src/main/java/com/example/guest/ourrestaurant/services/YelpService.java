@@ -1,5 +1,7 @@
 package com.example.guest.ourrestaurant.services;
 
+import android.util.Log;
+
 import com.example.guest.ourrestaurant.Constants;
 import com.example.guest.ourrestaurant.models.Restaurant;
 

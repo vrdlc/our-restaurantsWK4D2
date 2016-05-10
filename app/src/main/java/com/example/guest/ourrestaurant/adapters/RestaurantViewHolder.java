@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.guest.ourrestaurant.R;
 import com.example.guest.ourrestaurant.models.Restaurant;
 import com.example.guest.ourrestaurant.ui.RestaurantDetailActivity;
+import com.example.guest.ourrestaurant.util.ItemTouchHelperViewHolder;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -20,7 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class RestaurantViewHolder extends RecyclerView.ViewHolder {
+public class RestaurantViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
     private static final int MAX_WIDTH = 200;
     private static final int MAX_HEIGHT = 200;
 
@@ -60,6 +61,23 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
         mNameTextView.setText(restaurant.getName());
         mCategoryTextView.setText(restaurant.getCategories().get(0));
         mRatingTextView.setText("Rating: " + restaurant.getRating() + "/5");
+    }
+
+    @Override
+    public void onItemSelected() {
+        itemView.animate()
+                .alpha(0.7f)
+                .scaleX(0.9f)
+                .scaleY(0.9f)
+                .setDuration(500);
+    }
+
+    @Override
+    public void onItemClear() {
+        itemView.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f);
     }
 }
 

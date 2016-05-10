@@ -25,60 +25,13 @@ import okhttp3.Response;
 import okhttp3.Callback;
 
 public class RestaurantListActivity extends AppCompatActivity {
-
-    private SharedPreferences mSharedPreferences;
-    private String mRecentAddress;
-
-    @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
-    private RestaurantListAdapter mAdapter;
-    public ArrayList<Restaurant> mRestaurants = new ArrayList<>();
     public static final String TAG = RestaurantListActivity.class.getSimpleName();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "I'm here!");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurants);
-        ButterKnife.bind(this);
-
-        Intent intent = getIntent();
-
-//        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);
-//
-//        if (mRecentAddress != null) {
-//            getRestaurants(mRecentAddress);
-//        }
-
-        String location = intent.getStringExtra("location");
-        getRestaurants(location);
     }
 
-    private void getRestaurants(String location) {
-        final YelpService yelpService = new YelpService();
-
-        yelpService.findRestaurants(location, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) {
-                mRestaurants = yelpService.processResults(response);
-
-                RestaurantListActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mAdapter = new RestaurantListAdapter(getApplicationContext(), mRestaurants);
-                        mRecyclerView.setAdapter(mAdapter);
-                        RecyclerView.LayoutManager layoutManager =
-                                new LinearLayoutManager(RestaurantListActivity.this);
-                        mRecyclerView.setLayoutManager(layoutManager);
-                        mRecyclerView.setHasFixedSize(true);
-                    }
-                });
-            }
-        });
-    }
 }

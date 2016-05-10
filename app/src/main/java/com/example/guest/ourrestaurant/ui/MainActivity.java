@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SharedPreferences mSharedPreferences;
 
     @Bind(R.id.welcomeTextView) TextView mWelcomeTextView;
-    @Bind(R.id.locationEditText) EditText mLocationEditText;
     @Bind(R.id.findRestaurantsButton) Button mFindRestaurantsButton;
     @Bind(R.id.savedRestaurantsButton) Button mSavedRestaurantsButton;
 
@@ -97,9 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v == mFindRestaurantsButton) {
-            String location = mLocationEditText.getText().toString();
             Intent intent = new Intent(MainActivity.this, RestaurantListActivity.class);
-            intent.putExtra("location", location);
             startActivity(intent);
         }
         if (v == mSavedRestaurantsButton) {

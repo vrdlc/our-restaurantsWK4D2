@@ -1,5 +1,7 @@
 package com.example.guest.ourrestaurant.models;
 
+import android.util.Log;
+
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ public class Restaurant {
     double longitude;
     List<String> categories = new ArrayList<>();
     private String pushId;
+    private String index;
 
     // empty constructor needed by the Parceler library:
     public Restaurant() {}
@@ -28,11 +31,12 @@ public class Restaurant {
         this.phone = phone;
         this.website = website;
         this.rating = rating;
-        this.imageUrl = imageUrl;
+        this.imageUrl = getLargeImageUrl(imageUrl);
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
         this.categories = categories;
+        this.index = "not_specified";
     }
 
     public String getName() {
@@ -72,7 +76,7 @@ public class Restaurant {
     }
 
     public String getLargeImageUrl(String imageUrl) {
-        String largeImageUrl = imageUrl.substring(0, imageUrl.length() - 6).concat("o.jpeg");
+        String largeImageUrl = imageUrl.substring(0, imageUrl.length() - 6).concat("o.jpg");
         return largeImageUrl;
     }
 
@@ -82,5 +86,13 @@ public class Restaurant {
 
     public void setPushId(String pushId) {
         this.pushId = pushId;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
     }
 }
