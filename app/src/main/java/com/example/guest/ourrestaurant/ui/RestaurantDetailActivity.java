@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.guest.ourrestaurant.Constants;
 import com.example.guest.ourrestaurant.R;
@@ -19,6 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
+    public static final String TAG = RestaurantDetailFragment.class.getSimpleName();
     @Bind(R.id.viewPager)
     ViewPager mViewPager;
     private RestaurantPagerAdapter adapterViewPager;
@@ -35,9 +37,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         Integer startingPosition = intent.getIntExtra(Constants.EXTRA_KEY_POSITION, 0);
 //        int startingPosition = Integer.parseInt(getIntent().getStringExtra("position")); WHY DO WE CHANGE FROM "int" to "INTEGER"?
 
-        adapterViewPager = new RestaurantPagerAdapter(getSupportFragmentManager(), mRestaurants);
-        mViewPager.setAdapter(adapterViewPager);
-        mViewPager.setCurrentItem(startingPosition);
-        mViewPager.setPageTransformer(true, new ScaleAndFadePageTransformer());
+            adapterViewPager = new RestaurantPagerAdapter(getSupportFragmentManager(), mRestaurants);
+            mViewPager.setAdapter(adapterViewPager);
+            mViewPager.setCurrentItem(startingPosition);
+            mViewPager.setPageTransformer(true, new ScaleAndFadePageTransformer());
     }
 }

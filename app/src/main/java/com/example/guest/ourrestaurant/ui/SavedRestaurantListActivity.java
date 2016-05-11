@@ -41,10 +41,13 @@ public class SavedRestaurantListActivity extends AppCompatActivity implements On
             if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 mPosition = savedInstanceState.getInt(Constants.EXTRA_KEY_POSITION);
                 mRestaurants = Parcels.unwrap(savedInstanceState.getParcelable(Constants.EXTRA_KEY_RESTAURANTS));
-                Intent intent = new Intent(this, RestaurantDetailActivity.class);
-                intent.putExtra(Constants.EXTRA_KEY_POSITION, mPosition);
-                intent.putExtra(Constants.EXTRA_KEY_RESTAURANTS, Parcels.wrap(mRestaurants));
-                startActivity(intent);
+                Log.d(TAG, "SIZE IN LIST ACTIVITY: " + (mRestaurants == null));
+                if(mRestaurants != null) {
+                    Intent intent = new Intent(this, RestaurantDetailActivity.class);
+                    intent.putExtra(Constants.EXTRA_KEY_POSITION, mPosition);
+                    intent.putExtra(Constants.EXTRA_KEY_RESTAURANTS, Parcels.wrap(mRestaurants));
+                    startActivity(intent);
+                }
             }
         }
         setContentView(R.layout.activity_saved_restaurant_list);

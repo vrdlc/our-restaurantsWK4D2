@@ -62,10 +62,18 @@ public class RestaurantDetailFragment extends Fragment implements View.OnClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mRestaurants = Parcels.unwrap(getArguments().getParcelable(Constants.EXTRA_KEY_RESTAURANTS));
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mPosition = getArguments().getInt(Constants.EXTRA_KEY_POSITION);
+        Log.d(TAG, "SIZE SIZE: " + mRestaurants.size());
         mRestaurant = mRestaurants.get(mPosition);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(Constants.EXTRA_KEY_POSITION, Integer.valueOf(mPosition));
+        outState.putParcelable(Constants.EXTRA_KEY_RESTAURANTS, Parcels.wrap(mRestaurants));
+        super.onSaveInstanceState(outState);
     }
 
     @Override

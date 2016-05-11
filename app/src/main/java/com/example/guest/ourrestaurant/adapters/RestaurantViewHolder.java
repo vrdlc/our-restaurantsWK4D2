@@ -45,7 +45,7 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements Ite
     private ArrayList<Restaurant> mRestaurants = new ArrayList<>();
 
     private int mOrientation;
-    private Integer mPosition;
+    private Integer selectedPosition;
 
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mPositionEditor;
@@ -69,18 +69,16 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements Ite
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPosition = getLayoutPosition();
-                Log.d("POSTION AND RESTAURANTS", mPosition + " " + mRestaurants.size());
-                Log.d("Selected Listener", (mRestaurantSelectedListener == null) + " ");
-                mRestaurantSelectedListener.onRestaurantSelected(mPosition, mRestaurants);
+                selectedPosition = getLayoutPosition();
+                Log.d(TAG, "POSTION AND RESTAURANTS: " + selectedPosition + " " + mRestaurants.size());
+                mRestaurantSelectedListener.onRestaurantSelected(selectedPosition, mRestaurants);
 
                 if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    createDetailFragment(mPosition);
+                    createDetailFragment(selectedPosition);
                 } else {
                     Intent intent = new Intent(mContext, RestaurantDetailActivity.class);
-                    intent.putExtra(Constants.EXTRA_KEY_POSITION, mPosition);
-                    Log.v(TAG, "farts" + mPosition.toString());
-//                    mPositionEditor.putInt(Constants.EXTRA_KEY_POSITION, mPosition);
+                    intent.putExtra(Constants.EXTRA_KEY_POSITION, selectedPosition);
+//                    mPositionEditor.putInt(Constants.EXTRA_KEY_POSITION, selectedPosition);
                     intent.putExtra(Constants.EXTRA_KEY_RESTAURANTS, Parcels.wrap(mRestaurants));
                     mContext.startActivity(intent);
                 }
@@ -90,7 +88,9 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements Ite
 
 
     private void createDetailFragment(int position) {
+        Log.d(TAG, "" + mRestaurants.get(position).getName());
         RestaurantDetailFragment detailFragment = RestaurantDetailFragment.newInstance(mRestaurants, position);
+        Log.d(TAG, "Hit create detail fragment: position = " + position);
         FragmentTransaction ft = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.restaurantDetailContainer, detailFragment);
         ft.commit();
