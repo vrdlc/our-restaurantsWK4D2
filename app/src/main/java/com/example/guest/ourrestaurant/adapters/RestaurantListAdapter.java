@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.guest.ourrestaurant.R;
 import com.example.guest.ourrestaurant.models.Restaurant;
 import com.example.guest.ourrestaurant.ui.RestaurantDetailActivity;
+import com.example.guest.ourrestaurant.util.OnRestaurantSelectedListener;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -23,17 +24,20 @@ import butterknife.ButterKnife;
 
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHolder> {
     private ArrayList<Restaurant> mRestaurants = new ArrayList<>();
+    public RestaurantViewHolder viewHolder;
     private Context mContext;
+    private OnRestaurantSelectedListener mOnRestaurantSelectedListener;
 
-    public RestaurantListAdapter(Context context, ArrayList<Restaurant> restaurants) {
-        mContext = context;
+    public RestaurantListAdapter(ArrayList<Restaurant> restaurants, OnRestaurantSelectedListener restaurantSelectedListener) {
+//        mContext = context;
         mRestaurants = restaurants;
+        mOnRestaurantSelectedListener = restaurantSelectedListener;
     }
 
     @Override
     public RestaurantViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.restaurant_list_item, parent, false);
-        RestaurantViewHolder viewHolder = new RestaurantViewHolder(view, mRestaurants);
+        viewHolder = new RestaurantViewHolder(view, mRestaurants, mOnRestaurantSelectedListener);
         return viewHolder;
     }
 

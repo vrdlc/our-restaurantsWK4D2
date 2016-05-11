@@ -2,10 +2,13 @@ package com.example.guest.ourrestaurant.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +19,7 @@ import com.example.guest.ourrestaurant.models.Restaurant;
 import com.example.guest.ourrestaurant.ui.RestaurantDetailActivity;
 import com.example.guest.ourrestaurant.ui.RestaurantDetailFragment;
 import com.example.guest.ourrestaurant.util.ItemTouchHelperViewHolder;
+import com.example.guest.ourrestaurant.util.OnRestaurantSelectedListener;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -27,6 +31,8 @@ import butterknife.ButterKnife;
 
 
 public class RestaurantViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
+    public static final String TAG = RestaurantViewHolder.class.getSimpleName();
+
     private static final int MAX_WIDTH = 200;
     private static final int MAX_HEIGHT = 200;
 
@@ -41,12 +47,22 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements Ite
     private int mOrientation;
     private Integer mPosition;
 
-    public RestaurantViewHolder(View itemView, ArrayList<Restaurant> restaurants) {
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mPositionEditor;
+
+    private OnRestaurantSelectedListener mRestaurantSelectedListener;
+
+
+    public RestaurantViewHolder(View itemView, ArrayList<Restaurant> restaurants, OnRestaurantSelectedListener restaurantSelectedListener) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         mContext = itemView.getContext();
         mRestaurants = restaurants;
         mOrientation = itemView.getResources().getConfiguration().orientation;
+        mRestaurantSelectedListener = restaurantSelectedListener;
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mPositionEditor = mSharedPreferences.edit();
+
         if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
             createDetailFragment(0);
         }
@@ -54,11 +70,17 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements Ite
             @Override
             public void onClick(View v) {
                 mPosition = getLayoutPosition();
+                Log.d("POSTION AND RESTAURANTS", mPosition + " " + mRestaurants.size());
+                Log.d("Selected Listener", (mRestaurantSelectedListener == null) + " ");
+                mRestaurantSelectedListener.onRestaurantSelected(mPosition, mRestaurants);
+
                 if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
                     createDetailFragment(mPosition);
                 } else {
                     Intent intent = new Intent(mContext, RestaurantDetailActivity.class);
-                    intent.putExtra(Constants.EXTRA_KEY_POSITION, mPosition.toString());
+                    intent.putExtra(Constants.EXTRA_KEY_POSITION, mPosition);
+                    Log.v(TAG, "farts" + mPosition.toString());
+//                    mPositionEditor.putInt(Constants.EXTRA_KEY_POSITION, mPosition);
                     intent.putExtra(Constants.EXTRA_KEY_RESTAURANTS, Parcels.wrap(mRestaurants));
                     mContext.startActivity(intent);
                 }

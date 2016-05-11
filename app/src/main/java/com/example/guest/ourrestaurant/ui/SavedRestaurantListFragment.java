@@ -1,11 +1,13 @@
 package com.example.guest.ourrestaurant.ui;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.example.guest.ourrestaurant.R;
 import com.example.guest.ourrestaurant.adapters.FirebaseRestaurantListAdapter;
 import com.example.guest.ourrestaurant.fragments.BaseFragment;
 import com.example.guest.ourrestaurant.models.Restaurant;
+import com.example.guest.ourrestaurant.util.OnRestaurantSelectedListener;
 import com.example.guest.ourrestaurant.util.OnStartDragListener;
 import com.example.guest.ourrestaurant.util.SimpleItemTouchHelperCallback;
 import com.firebase.client.Firebase;
@@ -31,7 +34,18 @@ public class SavedRestaurantListFragment extends BaseFragment implements OnStart
     private Firebase mFirebaseRestaurantsRef;
     private FirebaseRestaurantListAdapter mAdapter;
     private ItemTouchHelper mItemTouchHelper;
+    OnRestaurantSelectedListener mRestaurantSelectedListener;
     @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mRestaurantSelectedListener = (OnRestaurantSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + e.getMessage());
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +73,7 @@ public class SavedRestaurantListFragment extends BaseFragment implements OnStart
     }
 
     private void setUpRecyclerView() {
-        mAdapter = new FirebaseRestaurantListAdapter(mQuery, Restaurant.class, this);
+        mAdapter = new FirebaseRestaurantListAdapter(mQuery, Restaurant.class, this, mRestaurantSelectedListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
 

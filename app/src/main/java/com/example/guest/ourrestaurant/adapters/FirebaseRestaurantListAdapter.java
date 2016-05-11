@@ -15,6 +15,7 @@ import com.example.guest.ourrestaurant.R;
 import com.example.guest.ourrestaurant.models.Restaurant;
 import com.example.guest.ourrestaurant.util.FirebaseRecyclerAdapter;
 import com.example.guest.ourrestaurant.util.ItemTouchHelperAdapter;
+import com.example.guest.ourrestaurant.util.OnRestaurantSelectedListener;
 import com.example.guest.ourrestaurant.util.OnStartDragListener;
 import com.firebase.client.Firebase;
 import com.firebase.client.Query;
@@ -25,10 +26,12 @@ public class FirebaseRestaurantListAdapter extends FirebaseRecyclerAdapter<Resta
 
     private final OnStartDragListener mDragStartListener;
     private Context mContext;
+    private OnRestaurantSelectedListener mRestaurantSelectedListener;
 
-    public FirebaseRestaurantListAdapter(Query query, Class<Restaurant> itemClass, OnStartDragListener dragStartListener) {
+    public FirebaseRestaurantListAdapter(Query query, Class<Restaurant> itemClass, OnStartDragListener dragStartListener, OnRestaurantSelectedListener restaurantSelectedListener) {
         super(query, itemClass);
         mDragStartListener = dragStartListener;
+        mRestaurantSelectedListener = restaurantSelectedListener;
     }
 
     @Override
@@ -36,7 +39,7 @@ public class FirebaseRestaurantListAdapter extends FirebaseRecyclerAdapter<Resta
         mContext = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.restaurant_list_item_drag, parent, false);
-        return new RestaurantViewHolder(view, getItems());
+        return new RestaurantViewHolder(view, getItems(), mRestaurantSelectedListener);
     }
 
     @Override

@@ -24,6 +24,7 @@ import com.example.guest.ourrestaurant.adapters.RestaurantListAdapter;
 import com.example.guest.ourrestaurant.fragments.BaseFragment;
 import com.example.guest.ourrestaurant.models.Restaurant;
 import com.example.guest.ourrestaurant.services.YelpService;
+import com.example.guest.ourrestaurant.util.OnRestaurantSelectedListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,6 +43,17 @@ public class RestaurantListFragment extends BaseFragment {
     private String mRecentAddress;
     private RestaurantListAdapter mAdapter;
     public ArrayList<Restaurant> mRestaurants = new ArrayList<>();
+    OnRestaurantSelectedListener mOnRestaurantSelectedListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mOnRestaurantSelectedListener = (OnRestaurantSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + e.getMessage());
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,7 +125,7 @@ public class RestaurantListFragment extends BaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mAdapter = new RestaurantListAdapter(getActivity(), mRestaurants);
+                        mAdapter = new RestaurantListAdapter(mRestaurants, mOnRestaurantSelectedListener);
                         mRecyclerView.setAdapter(mAdapter);
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                         mRecyclerView.setLayoutManager(layoutManager);

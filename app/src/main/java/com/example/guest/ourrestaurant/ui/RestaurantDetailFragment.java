@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class RestaurantDetailFragment extends Fragment implements View.OnClickListener {
+    public static final String TAG = RestaurantDetailFragment.class.getSimpleName();
     private SharedPreferences mSharedPreferences;
 
 
