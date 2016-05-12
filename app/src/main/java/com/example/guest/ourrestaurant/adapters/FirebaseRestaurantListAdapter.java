@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,8 +25,10 @@ import java.util.Collections;
 
 public class FirebaseRestaurantListAdapter extends FirebaseRecyclerAdapter<RestaurantViewHolder, Restaurant> implements ItemTouchHelperAdapter {
 
+    public static final String TAG = FirebaseRestaurantListAdapter.class.getSimpleName();
     private final OnStartDragListener mDragStartListener;
     private Context mContext;
+    private RestaurantViewHolder viewHolder;
     private OnRestaurantSelectedListener mRestaurantSelectedListener;
 
     public FirebaseRestaurantListAdapter(Query query, Class<Restaurant> itemClass, OnStartDragListener dragStartListener, OnRestaurantSelectedListener restaurantSelectedListener) {
@@ -39,7 +42,11 @@ public class FirebaseRestaurantListAdapter extends FirebaseRecyclerAdapter<Resta
         mContext = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.restaurant_list_item_drag, parent, false);
-        return new RestaurantViewHolder(view, getItems(), mRestaurantSelectedListener);
+        viewHolder = new RestaurantViewHolder(view, getItems(), mRestaurantSelectedListener);
+
+        Log.d(TAG, "" + viewHolder);
+
+        return viewHolder;
     }
 
     @Override
@@ -63,9 +70,11 @@ public class FirebaseRestaurantListAdapter extends FirebaseRecyclerAdapter<Resta
         return true;
     }
 
+
     @Override
     public void onItemDismiss(int position) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        Log.d(TAG, "HERE" + sharedPreferences);
         String uid = sharedPreferences.getString(Constants.KEY_UID, null);
         Firebase ref = new Firebase(Constants.FIREBASE_URL_RESTAURANTS).child(uid);
         String restaurantKey = getItem(position).getPushId();

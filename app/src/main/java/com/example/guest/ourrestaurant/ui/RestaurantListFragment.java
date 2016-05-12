@@ -9,6 +9,7 @@ import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,11 +21,15 @@ import android.view.ViewGroup;
 
 import com.example.guest.ourrestaurant.Constants;
 import com.example.guest.ourrestaurant.R;
+import com.example.guest.ourrestaurant.adapters.FirebaseRestaurantListAdapter;
 import com.example.guest.ourrestaurant.adapters.RestaurantListAdapter;
 import com.example.guest.ourrestaurant.fragments.BaseFragment;
 import com.example.guest.ourrestaurant.models.Restaurant;
 import com.example.guest.ourrestaurant.services.YelpService;
 import com.example.guest.ourrestaurant.util.OnRestaurantSelectedListener;
+import com.example.guest.ourrestaurant.util.OnStartDragListener;
+import com.example.guest.ourrestaurant.util.SimpleItemTouchHelperCallback;
+import com.firebase.client.Query;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +41,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 
-public class RestaurantListFragment extends BaseFragment {
+public class RestaurantListFragment extends BaseFragment implements OnStartDragListener {
     public static final String TAG = RestaurantListFragment.class.getSimpleName();
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -44,6 +49,10 @@ public class RestaurantListFragment extends BaseFragment {
     private RestaurantListAdapter mAdapter;
     public ArrayList<Restaurant> mRestaurants = new ArrayList<>();
     OnRestaurantSelectedListener mOnRestaurantSelectedListener;
+
+    private ItemTouchHelper mItemTouchHelper;
+    private FirebaseRestaurantListAdapter mFirebaseAdapter;
+    private Query mQuery;
 
     @Override
     public void onAttach(Context context) {
@@ -69,6 +78,8 @@ public class RestaurantListFragment extends BaseFragment {
         if(location != null) {
             getRestaurants(location);
         }
+
+        setUpRecyclerView();
         return view;
     }
 
@@ -134,5 +145,20 @@ public class RestaurantListFragment extends BaseFragment {
                 });
             }
         });
+    }
+
+    private void setUpRecyclerView() {
+        mAdapter = new RestaurantListAdapter(mRestaurants, mOnRestaurantSelectedListener);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(mAdapter);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
     }
 }

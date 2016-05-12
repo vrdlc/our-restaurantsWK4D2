@@ -2,6 +2,8 @@ package com.example.guest.ourrestaurant.util;
 
 import android.util.Log;
 
+import com.example.guest.ourrestaurant.models.Restaurant;
+
 /**
  * Created by Guest on 5/10/16.
  */
