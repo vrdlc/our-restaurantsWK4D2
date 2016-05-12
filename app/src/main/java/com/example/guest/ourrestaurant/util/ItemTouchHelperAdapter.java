@@ -1,5 +1,7 @@
 package com.example.guest.ourrestaurant.util;
 
+import android.util.Log;
+
 /**
  * Created by Guest on 5/10/16.
  */

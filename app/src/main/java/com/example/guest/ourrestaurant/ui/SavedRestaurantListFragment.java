@@ -2,6 +2,7 @@ package com.example.guest.ourrestaurant.ui;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -101,6 +102,8 @@ public class SavedRestaurantListFragment extends BaseFragment implements OnStart
             public boolean onQueryTextSubmit(String query) {
                 addToSharedPreferences(query);
                 getRestaurants(query);
+                Intent intent = new Intent(getActivity(), RestaurantListActivity.class);
+                startActivity(intent);
                 return false;
             }
 

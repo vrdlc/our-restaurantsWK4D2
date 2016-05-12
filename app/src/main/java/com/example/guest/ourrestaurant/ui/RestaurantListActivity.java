@@ -37,7 +37,6 @@ public class RestaurantListActivity extends AppCompatActivity implements OnResta
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "I'm here!");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurants);
         if (savedInstanceState != null) {
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 mPosition = savedInstanceState.getInt(Constants.EXTRA_KEY_POSITION);
