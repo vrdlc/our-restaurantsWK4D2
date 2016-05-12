@@ -31,7 +31,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ValueEventListener mUserRefListener;
     private Firebase mUserRef;
     private String mUId;
-    private SharedPreferences mSharedPreferences;
 
     @Bind(R.id.welcomeTextView) TextView mWelcomeTextView;
     @Bind(R.id.findRestaurantsButton) Button mFindRestaurantsButton;
@@ -46,7 +45,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         mSavedRestaurantsButton.setOnClickListener(this);
         mFindRestaurantsButton.setOnClickListener(this);
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mUId = mSharedPreferences.getString(Constants.KEY_UID, null);
         mUserRef = new Firebase(Constants.FIREBASE_URL_USERS).child(mUId);
 

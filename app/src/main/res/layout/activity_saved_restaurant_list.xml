@@ -6,7 +6,7 @@
     tools:context=".ui.RestaurantListActivity">
 
     <fragment
-        android:id="@+id/fragmentRestaurantList"
+        android:id="@+id/fragmentSavedRestaurantList"
         android:name="com.example.guest.ourrestaurant.ui.SavedRestaurantListFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
